@@ -1,6 +1,10 @@
 from HinetPy import Client, win32
 
-client = Client("user", "password")
+with open("hinet.cred", 'r') as f:
+    print
+    client = Client(f.readline().strip(), f.readline().strip())
+
+exit()
 
 year = "2012"
 month = "01"
