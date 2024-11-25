@@ -1,10 +1,7 @@
 from HinetPy import Client, win32
 
-with open("hinet.cred", 'r') as f:
-    print
+with open("../hinet.cred", 'r') as f:
     client = Client(f.readline().strip(), f.readline().strip())
-
-exit()
 
 year = "2012"
 month = "01"
