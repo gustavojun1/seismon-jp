@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import os 
 from typing_extensions import Literal
 
-def create_target_dir(project_root: str, data_type: Literal["continuous", "event"], request_timestamp: str):
+def createTargetDir(project_root: str, data_type: Literal["continuous", "event"], request_timestamp: str):
 
     os.chdir(project_root)
 
@@ -17,7 +17,7 @@ def create_target_dir(project_root: str, data_type: Literal["continuous", "event
     os.makedirs(target_dir)
     os.chdir(target_dir)
 
-def cnt_extract(
+def cntExtract(
     project_root: str,
     client: Client,
     starttime: datetime,
@@ -25,7 +25,7 @@ def cnt_extract(
 
     request_timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
-    create_target_dir(project_root, "continuous", request_timestamp)
+    createTargetDir(project_root, "continuous", request_timestamp)
 
     # data retrival
     # network code is 0101 for HiNet
@@ -45,7 +45,7 @@ def cnt_extract(
     # go back to root
     os.chdir(project_root)
 
-def evt_extract(
+def evtExtract(
     project_root: str,
     client: Client,
     min_magnitude: float,
@@ -55,7 +55,7 @@ def evt_extract(
 
     request_timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
-    create_target_dir(project_root, "event", request_timestamp)
+    createTargetDir(project_root, "event", request_timestamp)
 
     endtime = starttime + timedelta(minutes=span)
 
