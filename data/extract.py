@@ -39,3 +39,30 @@ def cnt_extract(
 
     # go back to root
     os.chdir(project_root)
+
+def evt_extract(
+    project_root: str,
+    client: Client,
+    minmagnitude: float,
+    starttime,
+    span,
+    region = 00):
+
+    endtime = starttime + timedelta(minutes=span)
+
+    client.get_event_waveform(
+        starttime,
+        endtime,
+        region,
+        minmagnitude
+    )
+
+    for event in os.listdir("."):
+        if os.path.isdir(event):
+            os.chdir(event)
+            print(os.getcwd())
+            data = event + ".evt"
+            ctable = event + ".ch"
+            win32.extract_sac(data, ctable)
+            os.chdir("..")
+        # break # for extracting 1 event only for now
