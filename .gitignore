@@ -1,4 +1,4 @@
 *.cred
-.SAC
-.SAC_PZ
-.png
+*.SAC
+*.SAC_PZ
+*.png
