@@ -4,3 +4,5 @@
 *.png
 win32tools/
 data/__pycache__/
+/data/*/
+!/data/*/*
