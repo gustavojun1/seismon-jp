@@ -25,7 +25,11 @@ def cnt_extract(
     target_dir = os.path.dirname(os.path.abspath(__file__)) + "/continuous_data"
     if not os.path.exists(target_dir):
         os.makedirs(target_dir)
-        print(f"Target directory do not exist yet, created at {target_dir}")
+        print(f"Target directory for continuous data does not exist yet, created at {target_dir}")
+
+    # the name of the target dir is the date of the extraction request
+    target_dir += "/" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    os.mkdir(target_dir)
     os.chdir(target_dir)
 
     # network code is 0101 for HiNet
