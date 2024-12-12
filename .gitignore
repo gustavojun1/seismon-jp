@@ -2,3 +2,5 @@
 *.SAC
 *.SAC_PZ
 *.png
+win32tools/
+data/__pycache__/
