@@ -17,7 +17,7 @@ def createTargetDir(project_root: str, data_type: Literal["continuous", "event"]
     os.makedirs(target_dir)
     os.chdir(target_dir)
 
-def createMetadataFile(request_timestamp, start_time, span, end_time: bool = True, name = "info.txt"):
+def createMetadataFile(request_timestamp, start_time, span, max_span = 0, end_time: bool = True, name = "info.txt"):
 
     with open(name, "w") as f:
         f.write("Request Timestamp: " + str(request_timestamp) + "\n")
@@ -25,12 +25,15 @@ def createMetadataFile(request_timestamp, start_time, span, end_time: bool = Tru
         if end_time:
             f.write("End Time: " + str(start_time + timedelta(minutes=span)) + "\n")
         f.write("Time Span: " + str(span) + (" minute" if span == 1 else " minutes") + "\n")
+        if max_span > 0:
+            f.write("Sub-request Max Span: " + str(max_span) + (" minute" if span == 1 else " minutes") + "\n")
 
 def cntExtract(
     project_root: str,
     client: Client,
     starttime: datetime,
-    span = 5):
+    span,
+    max_span=5):
 
     request_timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
@@ -38,9 +41,9 @@ def cntExtract(
 
     # data retrival
     # network code is 0101 for HiNet
-    data, ctable = client.get_continuous_waveform("0101", starttime, span)
+    data, ctable = client.get_continuous_waveform("0103", starttime, span, max_span, threads=8, cleanup=False)
 
-    createMetadataFile(request_timestamp, starttime, span)
+    createMetadataFile(request_timestamp, starttime, span, max_span)
 
     # data conversion (WIN32 -> SAC)
     win32.extract_sac(data, ctable) 
