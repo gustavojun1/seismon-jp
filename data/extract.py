@@ -17,6 +17,8 @@ def createTargetDir(project_root: str, data_type: Literal["continuous", "event"]
     os.makedirs(target_dir)
     os.chdir(target_dir)
 
+    return target_dir
+
 def createMetadataFile(request_timestamp, start_time, span, max_span = 0, end_time: bool = True, name = "info.txt"):
 
     with open(name, "w") as f:
@@ -63,7 +65,8 @@ def evtExtract(
 
     request_timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
-    createTargetDir(project_root, "event", request_timestamp)
+    target_dir = createTargetDir(project_root, "event", request_timestamp)
+    target_dir = os.path.join(target_dir, )
 
     endtime = starttime + timedelta(minutes=span)
     # data retrival
@@ -75,14 +78,15 @@ def evtExtract(
         max_magnitude
     )
 
-    print(events)
-    return
-
     createMetadataFile(request_timestamp, starttime, span)
+
+    # list of paths to each event to guide the continuous extraction
+    events_path_list = []
 
     for event in os.listdir("."):
         print(os.getcwd())
         if os.path.isdir(event):
+            events_path_list.append(os.path.join(os.getcwd,event))
             os.chdir(event)
             data = event + ".evt"
             ctable = event + ".ch"
@@ -92,3 +96,5 @@ def evtExtract(
 
     # go back to root
     os.chdir(project_root)
+
+    return events_path_list
