@@ -40,7 +40,7 @@ def cntExtract(
     createTargetDir(project_root, "continuous", request_timestamp)
 
     # data retrival
-    # network code is 0101 for HiNet
+    # network code is 0101 for HiNet and 0103 for F-net
     data, ctable = client.get_continuous_waveform("0103", starttime, span, max_span, threads=8, cleanup=False)
 
     createMetadataFile(request_timestamp, starttime, span, max_span)
@@ -55,9 +55,10 @@ def cntExtract(
 def evtExtract(
     project_root: str,
     client: Client,
-    min_magnitude: float,
-    starttime,
     span,
+    starttime,
+    min_magnitude: float,
+    max_magnitude = 9.9,
     region = 0):
 
     request_timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -65,14 +66,17 @@ def evtExtract(
     createTargetDir(project_root, "event", request_timestamp)
 
     endtime = starttime + timedelta(minutes=span)
-
     # data retrival
-    client.get_event_waveform(
+    events = client.get_event_waveform(
         starttime,
         endtime,
         region,
-        min_magnitude
+        min_magnitude,
+        max_magnitude
     )
+
+    print(events)
+    return
 
     createMetadataFile(request_timestamp, starttime, span)
 
