@@ -15,6 +15,7 @@ def evtDataToJSON(base_path):
                             key, value = map(str.strip, line.split(":", 1))
                             evt_data[key] = value
                         earthquake_list[file_name] = evt_data
+
             os.chdir(base_path) 
 
     output_file = "earthquake_data.json"
@@ -22,8 +23,12 @@ def evtDataToJSON(base_path):
         json.dump(earthquake_list, json_file, ensure_ascii=False, indent=4)
 
     print(f"Earthquake data saved to {output_file}")
+    return output_file
 
 if __name__ == "__main__":
     base_path = "/home/gjnagatomo/seismon-jp/data/event_data/2025-01-15_14-22-35/"
-    evtDataToJSON(base_path)
+    json_file = evtDataToJSON(base_path)
     os.chdir(base_path)
+
+    with open(json_file, "r") as file:
+        data = json.load(file)
