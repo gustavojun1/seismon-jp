@@ -29,11 +29,11 @@ def createCntMetadataFile(request_timestamp, start_time, downloaded_event_list, 
         f.write("Downloaded events:\n")
         for de in downloaded_event_list:
             total_downloaded_minutes += de[1]
-            f.write(f"From {de[0]} to {de[0] + timedelta(de[1])}")
+            f.write(f"From {de[0]} to {de[0] + timedelta(de[1])}\n")
 
         f.write("Not downloaded events:\n")
         for nde in not_downloaded_event_list:
-            f.write(f"From {nde[0]} to {nde[0] + timedelta(nde[1])}")
+            f.write(f"From {nde[0]} to {nde[0] + timedelta(nde[1])}\n")
 
         f.write("Start Time: " + str(start_time) + "\n")
 
