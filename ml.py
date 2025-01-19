@@ -45,6 +45,20 @@ def evtResultantVectorByStation(event_dir_path):
         magnitude_by_station[key] = np.sqrt(magnitude_by_station[key])
     return magnitude_by_station
 
+def evtArray(base_path):
+    num_events = sum(1 for entry in os.scandir(base_path) if entry.is_dir())
+    print(f"Processing a total of {num_events} events.")
+    events = []
+    processed_events = 0
+    for dir in os.listdir(base_path):
+        full_path = os.path.join(base_path, dir)
+        if os.path.isdir(full_path):
+            print(f"Processing event {dir}...")
+            events.append(evtResultantVectorByStation(full_path))
+            processed_events += 1
+            print(f"Event {dir} processed sucessfully! [{processed_events}/{num_events}]")
+    return events
+
 if __name__ == "__main__":
     # metadata
     base_path = "/home/gjnagatomo/seismon-jp/data/event_data/2025-01-15_14-22-35/"
@@ -54,8 +68,4 @@ if __name__ == "__main__":
     with open(json_file, "r") as file:
         data = json.load(file)
     
-    # data of the D20120101000394_20 event
-    events = []
-    for dir in os.listdir(base_path):
-        events.append(evtResultantVectorByStation(os.path.join(base_path, dir)))
-    print(events)
+    events = evtArray(base_path)
