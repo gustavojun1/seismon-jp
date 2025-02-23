@@ -105,6 +105,9 @@ def cntExtract(
         # Prevents downloading data from the same time period twice
         if event_starttime < prev_event_timestamp:
             event_starttime = prev_event_timestamp
+        
+        os.makedirs(str(event_starttime))
+        os.chdir(str(event_starttime))
 
         print(f"Downloading data from {event_starttime} to {event_starttime + timedelta(minutes=event_relevant_span)}")
 
@@ -114,14 +117,15 @@ def cntExtract(
 
         if data is not None and ctable is not None:
             donwloaded_events_list.append([event_starttime, event_relevant_span])
+            # data conversion (WIN32 -> SAC)
+            win32.extract_sac(data, ctable) 
+            win32.extract_sacpz(ctable)
         else:
             not_donwloaded_events_list.append([event_starttime, event_relevant_span])
+        
+        os.chdir("..")
 
     createCntMetadataFile(request_timestamp, starttime, donwloaded_events_list, not_donwloaded_events_list, max_span)
-
-    # data conversion (WIN32 -> SAC)
-    win32.extract_sac(data, ctable) 
-    win32.extract_sacpz(ctable)
 
     # go back to root
     os.chdir(project_root)
